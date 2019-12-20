@@ -1,0 +1,58 @@
+{
+  "children": [
+    {
+      "purpose": null,
+      "children": [
+        {
+          "type": "file",
+          "name": "001-meta.t"
+        },
+        {
+          "name": "020-use.t",
+          "type": "file"
+        },
+        {
+          "type": "file",
+          "name": "030-hash.t"
+        }
+      ],
+      "name": "t",
+      "type": "directory"
+    },
+    {
+      "type": "file",
+      "name": "README.md"
+    },
+    {
+      "type": "directory",
+      "name": "lib",
+      "children": [
+        {
+          "children": [
+            {
+              "type": "file",
+              "name": "SodiumPasswordHash.pm"
+            }
+          ],
+          "purpose": null,
+          "type": "directory",
+          "name": "Crypt"
+        }
+      ],
+      "purpose": null
+    },
+    {
+      "name": "META6.json",
+      "type": "file"
+    },
+    {
+      "name": "Changes",
+      "type": "file"
+    },
+    {
+      "type": "file",
+      "name": "LICENCE"
+    }
+  ],
+  "type": "layout"
+}
