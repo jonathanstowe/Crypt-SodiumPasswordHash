@@ -76,6 +76,18 @@ module Crypt::SodiumPasswordHash {
 
     constant LIB =  &find-lib-version;
 
+    sub crypto_pwhash_alg_argon2i13( --> int32 ) is native(LIB) { * }
+
+    sub crypto_pwhash_alg_argon2id13( --> int32 ) is native(LIB) { * }
+    
+    sub crypto_pwhash_alg_default( --> int32 ) is native(LIB) { * }
+
+
+    enum HashAlgorithm is export (
+        ARGON2I13   => crypto_pwhash_alg_argon2i13(),
+        ARGON2ID13  => crypto_pwhash_alg_argon2id13()
+    );
+
     sub crypto_pwhash_strbytes( --> size_t ) is native(LIB) { * }
 
     constant SCRYPT_STRBYTES = crypto_pwhash_strbytes();
@@ -97,16 +109,16 @@ module Crypt::SodiumPasswordHash {
 
     constant MEMLIMIT_SENSITIVE = crypto_pwhash_memlimit_sensitive();
 
-    sub crypto_pwhash_str(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit --> int32) is native(LIB) { * }
+    sub crypto_pwhash_str_alg(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit, int32 $alg --> int32) is native(LIB) { * }
 
-    sub sodium-hash(Str $password, Bool :$sensitive --> Str ) is export {
+    sub sodium-hash(Str $password, HashAlgorithm $algo = HashAlgorithm(crypto_pwhash_alg_default()), Bool :$sensitive --> Str ) is export {
 
         my $opslimit = $sensitive ?? OPSLIMIT_SENSITIVE !! OPSLIMIT_INTERACTIVE;
         my $memlimit = $sensitive ?? MEMLIMIT_SENSITIVE !! MEMLIMIT_INTERACTIVE;
         my $password-length = $password.encode.bytes;
         my $hashed        = CArray[uint8].allocate(SCRYPT_STRBYTES);
 
-        if crypto_pwhash_str($hashed, $password, $password-length, $opslimit, $memlimit) {
+        if crypto_pwhash_str_alg($hashed, $password, $password-length, $opslimit, $memlimit, $algo) {
             die 'out of memory in sodium-hash';
         }
 

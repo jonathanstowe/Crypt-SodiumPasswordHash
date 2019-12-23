@@ -33,15 +33,42 @@ if check-lib-version() {
         my $hash;
         lives-ok { $hash = sodium-hash($password) }, 'sodium-hash';
         lives-ok { ok sodium-verify($hash, $password), "verify ok" }, 'sodium-verify';
-        lives-ok { nok sodium-verify($hash, $password.comb.reverse.join), "verify nok with wrong password" }, 'sodium-verify';
+        lives-ok { nok sodium-verify($hash, $password.flip), "verify nok with wrong password" }, 'sodium-verify';
     }, 'with interactive profile';
+    subtest  {
+        my $password = @chars.pick(20).join;
+        my $hash;
+        lives-ok { $hash = sodium-hash($password, ARGON2ID13) }, 'sodium-hash';
+        lives-ok { ok sodium-verify($hash, $password), "verify ok" }, 'sodium-verify';
+        lives-ok { nok sodium-verify($hash, $password.flip), "verify nok with wrong password" }, 'sodium-verify';
+    }, 'with explicit ARGON2ID13 ';
+    todo "ARGON2I13 doesn't seem to work as expected";
+    subtest  {
+        my $password = @chars.pick(20).join;
+        my $hash;
+        lives-ok { $hash = sodium-hash($password, ARGON2I13) }, 'sodium-hash';
+        lives-ok { ok sodium-verify($hash, $password), "verify ok" }, 'sodium-verify';
+        lives-ok { nok sodium-verify($hash, $password.flip), "verify nok with wrong password" }, 'sodium-verify';
+    }, 'with explicit ARGON2I13 ';
     subtest  {
         my $password = @chars.pick(20).join;
         my $hash;
         lives-ok { $hash = sodium-hash($password, :sensitive) }, 'sodium-hash';
         lives-ok { ok sodium-verify($hash, $password), "verify ok" }, 'sodium-verify';
-        lives-ok { nok sodium-verify($hash, $password.comb.reverse.join), "verify nok with wrong password" }, 'sodium-verify';
+        lives-ok { nok sodium-verify($hash, $password.flip), "verify nok with wrong password" }, 'sodium-verify';
     }, 'with sensitive profile';
+    subtest {
+        if (try require ::('Crypt::Argon2') <&argon2-hash> ) !=== Nil {
+            my $password = @chars.pick(20).join;
+            my $hash;
+            lives-ok { $hash = argon2-hash($password) }, 'use argon2-hash from Crypt::Argon2';
+            lives-ok { ok sodium-verify($hash, $password), "verify ok" }, 'sodium-verify should validate ok';
+        }
+        else {
+            skip "No Argon2 module installed";
+        }
+
+    }, "hash compatibility";
 }
 else {
     skip "No libsodium, skipping tests";
