@@ -37,7 +37,9 @@ by L<libsodium|https://libsodium.gitbook.io/doc/>.
 
 The algorithm used is the one recomended by the installed version of
 libsodium. as of version 23 this is a variant of Argon2, but older
-versions may provide a different one as may future versions.
+versions may provide a different one as may future versions. Additionally
+the C<sodium-verify> should be able to verify a password hash created
+by other libraries that support the Argon2 family such as L<Crypt::Argon2||https://github.com/skinkade/p6-crypt-argon2>.
 
 
 The hash returned by C<sodium-hash> is in the format used in
@@ -90,7 +92,7 @@ module Crypt::SodiumPasswordHash {
 
     sub crypto_pwhash_strbytes( --> size_t ) is native(LIB) { * }
 
-    constant SCRYPT_STRBYTES = crypto_pwhash_strbytes();
+    constant SODIUM_STRBYTES = crypto_pwhash_strbytes();
 
 
     sub crypto_pwhash_opslimit_interactive( --> size_t ) is native(LIB) { * }
@@ -116,13 +118,13 @@ module Crypt::SodiumPasswordHash {
         my $opslimit = $sensitive ?? OPSLIMIT_SENSITIVE !! OPSLIMIT_INTERACTIVE;
         my $memlimit = $sensitive ?? MEMLIMIT_SENSITIVE !! MEMLIMIT_INTERACTIVE;
         my $password-length = $password.encode.bytes;
-        my $hashed        = CArray[uint8].allocate(SCRYPT_STRBYTES);
+        my $hashed        = CArray[uint8].allocate(SODIUM_STRBYTES);
 
         if crypto_pwhash_str_alg($hashed, $password, $password-length, $opslimit, $memlimit, $algo) {
             die 'out of memory in sodium-hash';
         }
 
-        my $buf = copy-carray-to-buf($hashed, SCRYPT_STRBYTES);
+        my $buf = copy-carray-to-buf($hashed, SODIUM_STRBYTES);
         $buf.decode.subst(/\0+$/,'');
     }
 

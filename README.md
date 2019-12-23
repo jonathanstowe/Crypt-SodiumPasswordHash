@@ -21,7 +21,7 @@ Password hashing using the libsodium recommended algorithm
 
 This module provides a binding to the password hashing functions provided by [libsodium](https://libsodium.gitbook.io/doc/).
 
-The algorithm used is the one recomended by the installed version of libsodium. as of version 23 this is a variant of Argon2, but older versions may provide a different one as may future versions.
+The algorithm used is the one recomended by the installed version of libsodium. as of version 23 this is a variant of Argon2, but older versions may provide a different one as may future versions. Additionally the `sodium-verify` should be able to verify a password hash created by other libraries that support the Argon2 family such as [Crypt::Argon2](|https://github.com/skinkade/p6-crypt-argon2).
 
 The hash returned by `sodium-hash` is in the format used in `/etc/shadow` and can be verified by other libraries that understand the algorithm. By default the *interactive* limits for memory and CPU usage are used, which is a reasonable compromise for the time taken for both hashing and verification. If the `:sensitive` switch is supplied to `sodium-hash` then both hashing and verification take significantly longer (and use more memory,) so this may not suitable for some applications.
 

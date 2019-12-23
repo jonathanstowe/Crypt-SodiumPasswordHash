@@ -1,5 +1,2 @@
-v0.0.2		Fri 20 Dec 12:33:35 GMT 2019
-	* Remove trailling nulls from hash
-	* catch failure of hash function
-v0.0.1		Thu 19 Dec 13:17:49 GMT 2019
+v0.0.1		Mon 23 Dec 09:50:44 GMT 2019
 	* Initial release
