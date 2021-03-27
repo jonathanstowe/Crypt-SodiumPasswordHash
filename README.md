@@ -2,6 +2,8 @@
 
 Password hashing using the libsodium recommended algorithm
 
+![Build Status](https://github.com/jonathanstowe/Crypt-SodiumPasswordHash/workflows/CI/badge.svg)
+
 ## Synopsis
 
 
