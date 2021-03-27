@@ -39,6 +39,8 @@ Assuming that you have a working installation of Rakudo then you should be able 
 
     zef install .
 
+The tests take a little longer than might be expected because it tests the _sensitive_ profile which is designed to take longer.
+
 ## Support
 
 If you any suggestions/patches feel free to send them via:
@@ -52,5 +54,4 @@ I've tested this with libsodium versions from 13 to 23, but if you find it doesn
 This is free software please see the [LICENCE](LICENCE) file in the distribution
 for details.
 
-© Jonathan Stowe 2019
-
+© Jonathan Stowe 2019 - 2021

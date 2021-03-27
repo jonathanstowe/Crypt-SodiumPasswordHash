@@ -1,5 +1,9 @@
 {
   "name": "Crypt::SodiumPasswordHash",
+  "auth": "github:jonathanstowe",
+  "version": "0.0.2",
+  "api" : "1.0",
+  "description": "Binding for libsodium password hashing",
   "source-url": "https://github.com/jonathanstowe/Crypt-SodiumPasswordHash.git",
   "support": {
     "source": "https://github.com/jonathanstowe/Crypt-SodiumPasswordHash.git",
@@ -8,30 +12,26 @@
   },
   "perl": "6.*",
   "raku": "6.*",
-  "resources": [
-  ],
-  "build-depends": [
-  ],
-  "auth": "github:jonathanstowe",
-  "depends": [
-	  "LibraryCheck",
-      "NativeHelpers::Array"
-  ],
+  "depends": {
+     "runtime": {
+        "requires": [
+           "LibraryCheck",
+           "NativeHelpers::Array"
+        ]
+     },
+     "test": [
+	     "LibraryCheck"
+     ]
+  },
   "tags": [ 
       "crypto", "libsodium", "password", "hash"
   ],
   "license": "Artistic-2.0",
-  "test-depends": [
-	  "LibraryCheck"
-  ],
   "provides": {
       "Crypt::SodiumPasswordHash": "lib/Crypt/SodiumPasswordHash.pm"
   },
-  "version": "0.0.1",
-  "api" : "1.0",
-  "meta-version": "1",
   "authors": [
-      "Jonathan Stpwe <jns+gh@gellyfish.co.uk"
+      "Jonathan Stowe <jns+gh@gellyfish.co.uk"
   ],
-  "description": "Binding for libsodium password hashing"
+  "meta-version" : 2
 }

@@ -68,21 +68,24 @@ module Crypt::SodiumPasswordHash {
                 my $version = Version.new($version-number);
 
                 if library-exists($name, $version) {
-                    $lib =  guess_library_name($name, $version) ;
+                    $lib =  guess_library_name($name, $version);
                     last;
                 }
             }
-            $lib;
+            if $lib {
+                $lib;
+            }
+            else {
+                die "unable to find libsodium between versions $lower to $upper";
+            }
         }
     }
 
-    constant LIB =  &find-lib-version;
+    sub crypto_pwhash_alg_argon2i13( --> int32 ) is native(&find-lib-version) { * }
 
-    sub crypto_pwhash_alg_argon2i13( --> int32 ) is native(LIB) { * }
+    sub crypto_pwhash_alg_argon2id13( --> int32 ) is native(&find-lib-version) { * }
 
-    sub crypto_pwhash_alg_argon2id13( --> int32 ) is native(LIB) { * }
-    
-    sub crypto_pwhash_alg_default( --> int32 ) is native(LIB) { * }
+    sub crypto_pwhash_alg_default( --> int32 ) is native(&find-lib-version) { * }
 
 
     enum HashAlgorithm is export (
@@ -90,28 +93,28 @@ module Crypt::SodiumPasswordHash {
         ARGON2ID13  => crypto_pwhash_alg_argon2id13()
     );
 
-    sub crypto_pwhash_strbytes( --> size_t ) is native(LIB) { * }
+    sub crypto_pwhash_strbytes( --> size_t ) is native(&find-lib-version) { * }
 
     constant SODIUM_STRBYTES = crypto_pwhash_strbytes();
 
 
-    sub crypto_pwhash_opslimit_interactive( --> size_t ) is native(LIB) { * }
+    sub crypto_pwhash_opslimit_interactive( --> size_t ) is native(&find-lib-version) { * }
 
     constant OPSLIMIT_INTERACTIVE = crypto_pwhash_opslimit_interactive();
 
-    sub crypto_pwhash_memlimit_interactive( --> size_t ) is native(LIB) { * }
+    sub crypto_pwhash_memlimit_interactive( --> size_t ) is native(&find-lib-version) { * }
 
     constant MEMLIMIT_INTERACTIVE = crypto_pwhash_memlimit_interactive();
 
-    sub crypto_pwhash_opslimit_sensitive( --> size_t ) is native(LIB) { * }
+    sub crypto_pwhash_opslimit_sensitive( --> size_t ) is native(&find-lib-version) { * }
 
     constant OPSLIMIT_SENSITIVE = crypto_pwhash_opslimit_sensitive();
 
-    sub crypto_pwhash_memlimit_sensitive( --> size_t ) is native(LIB) { * }
+    sub crypto_pwhash_memlimit_sensitive( --> size_t ) is native(&find-lib-version) { * }
 
     constant MEMLIMIT_SENSITIVE = crypto_pwhash_memlimit_sensitive();
 
-    sub crypto_pwhash_str_alg(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit, int32 $alg --> int32) is native(LIB) { * }
+    sub crypto_pwhash_str_alg(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit, int32 $alg --> int32) is native(&find-lib-version) { * }
 
     sub sodium-hash(Str $password, HashAlgorithm $algo = HashAlgorithm(crypto_pwhash_alg_default()), Bool :$sensitive --> Str ) is export {
 
@@ -128,7 +131,7 @@ module Crypt::SodiumPasswordHash {
         $buf.decode.subst(/\0+$/,'');
     }
 
-    sub crypto_pwhash_str_verify(Str $str, Str $passwd, ulonglong $passwdlen --> int32) is native(LIB) { * }
+    sub crypto_pwhash_str_verify(Str $str, Str $passwd, ulonglong $passwdlen --> int32) is native(&find-lib-version) { * }
 
     sub sodium-verify(Str $hash, Str $password --> Bool ) is export {
         my $password-length = $password.encode.bytes;
@@ -137,4 +140,4 @@ module Crypt::SodiumPasswordHash {
 
 }
 
-# vim: ft=perl6
+# vim: ft=raku

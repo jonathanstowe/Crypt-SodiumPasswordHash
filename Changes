@@ -1,2 +1,6 @@
+v0.0.1		Sat 27 Mar 09:32:00 GMT 2021
+	* Meaningful error message if libsodium not found
+    * Skip rather than fail tests if no libsodium
+	* Make a GH action for CI tests
 v0.0.1		Mon 23 Dec 09:50:44 GMT 2019
 	* Initial release
