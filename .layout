@@ -8,10 +8,6 @@
           "name": "001-meta.t"
         },
         {
-          "name": "020-use.t",
-          "type": "file"
-        },
-        {
           "type": "file",
           "name": "030-hash.t"
         }
