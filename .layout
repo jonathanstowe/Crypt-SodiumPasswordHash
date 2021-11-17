@@ -27,7 +27,7 @@
           "children": [
             {
               "type": "file",
-              "name": "SodiumPasswordHash.pm"
+              "name": "SodiumPasswordHash.rakumod"
             }
           ],
           "purpose": null,

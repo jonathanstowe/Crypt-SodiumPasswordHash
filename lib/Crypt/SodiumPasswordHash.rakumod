@@ -1,9 +1,8 @@
 use v6;
 
 use NativeCall :TEST,:DEFAULT;
-
+use NativeLibs:ver<0.0.5+>;
 use NativeHelpers::Array;
-use LibraryCheck;
 
 =begin pod
 
@@ -55,37 +54,18 @@ for some applications.
 
 module Crypt::SodiumPasswordHash {
 
-    my Str $lib;
-    sub find-lib-version() {
-        $lib //= do {
-            my Str $name = 'sodium';
-            my Int $lower = 13;
-            my Int $upper = 23;
+    constant LIB = NativeLibs::Searcher.at-runtime(
+        'sodium',
+        'crypto_pwhash_strbytes',
+        15..23
+    );
 
-            my $lib;
 
-            for $lower .. $upper -> $version-number {
-                my $version = Version.new($version-number);
+    sub crypto_pwhash_alg_argon2i13( --> int32 ) is native(LIB) { * }
 
-                if library-exists($name, $version) {
-                    $lib =  guess_library_name($name, $version);
-                    last;
-                }
-            }
-            if $lib {
-                $lib;
-            }
-            else {
-                die "unable to find libsodium between versions $lower to $upper";
-            }
-        }
-    }
+    sub crypto_pwhash_alg_argon2id13( --> int32 ) is native(LIB) { * }
 
-    sub crypto_pwhash_alg_argon2i13( --> int32 ) is native(&find-lib-version) { * }
-
-    sub crypto_pwhash_alg_argon2id13( --> int32 ) is native(&find-lib-version) { * }
-
-    sub crypto_pwhash_alg_default( --> int32 ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_alg_default( --> int32 ) is native(LIB) { * }
 
 
     enum HashAlgorithm is export (
@@ -93,28 +73,28 @@ module Crypt::SodiumPasswordHash {
         ARGON2ID13  => crypto_pwhash_alg_argon2id13()
     );
 
-    sub crypto_pwhash_strbytes( --> size_t ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_strbytes( --> size_t ) is native(LIB) { * }
 
     constant SODIUM_STRBYTES = crypto_pwhash_strbytes();
 
 
-    sub crypto_pwhash_opslimit_interactive( --> size_t ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_opslimit_interactive( --> size_t ) is native(LIB) { * }
 
     constant OPSLIMIT_INTERACTIVE = crypto_pwhash_opslimit_interactive();
 
-    sub crypto_pwhash_memlimit_interactive( --> size_t ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_memlimit_interactive( --> size_t ) is native(LIB) { * }
 
     constant MEMLIMIT_INTERACTIVE = crypto_pwhash_memlimit_interactive();
 
-    sub crypto_pwhash_opslimit_sensitive( --> size_t ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_opslimit_sensitive( --> size_t ) is native(LIB) { * }
 
     constant OPSLIMIT_SENSITIVE = crypto_pwhash_opslimit_sensitive();
 
-    sub crypto_pwhash_memlimit_sensitive( --> size_t ) is native(&find-lib-version) { * }
+    sub crypto_pwhash_memlimit_sensitive( --> size_t ) is native(LIB) { * }
 
     constant MEMLIMIT_SENSITIVE = crypto_pwhash_memlimit_sensitive();
 
-    sub crypto_pwhash_str_alg(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit, int32 $alg --> int32) is native(&find-lib-version) { * }
+    sub crypto_pwhash_str_alg(CArray[uint8] $out, Str $passwd, ulonglong $passwdlen, ulonglong $opslimit, size_t $memlimit, int32 $alg --> int32) is native(LIB) { * }
 
     sub sodium-hash(Str $password, HashAlgorithm $algo = HashAlgorithm(crypto_pwhash_alg_default()), Bool :$sensitive --> Str ) is export {
 
@@ -131,7 +111,7 @@ module Crypt::SodiumPasswordHash {
         $buf.decode.subst(/\0+$/,'');
     }
 
-    sub crypto_pwhash_str_verify(Str $str, Str $passwd, ulonglong $passwdlen --> int32) is native(&find-lib-version) { * }
+    sub crypto_pwhash_str_verify(Str $str, Str $passwd, ulonglong $passwdlen --> int32) is native(LIB) { * }
 
     sub sodium-verify(Str $hash, Str $password --> Bool ) is export {
         my $password-length = $password.encode.bytes;
