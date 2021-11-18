@@ -1,3 +1,5 @@
+v0.0.4		Thu 18 Nov 08:23:04 GMT 2021
+	* Fix the META6
 v0.0.3		Wed 17 Nov 12:32:44 GMT 2021
 	* Use NativeLibs to find library version
 v0.0.2		Sat 27 Mar 09:32:00 GMT 2021

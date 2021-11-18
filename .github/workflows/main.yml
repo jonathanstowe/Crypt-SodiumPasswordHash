@@ -26,7 +26,7 @@ jobs:
       run:  apt-get -qq install -y libsodium23
 
     - name: Install dependencies
-      run: zef install --deps-only --/test --test-depends .
+      run: zef install --deps-only --/test --force-install --test-depends .
 
     - name: Run tests
       run: zef test -v --debug .

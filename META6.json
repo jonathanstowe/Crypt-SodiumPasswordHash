@@ -1,7 +1,7 @@
 {
   "name": "Crypt::SodiumPasswordHash",
   "auth": "github:jonathanstowe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "api" : "1.0",
   "description": "Binding for libsodium password hashing",
   "source-url": "https://github.com/jonathanstowe/Crypt-SodiumPasswordHash.git",
@@ -19,9 +19,11 @@
            "NativeHelpers::Array"
         ]
      },
-     "test": [
-	     "LibraryCheck"
-     ]
+     "test": {
+        "requires" : [
+	        "LibraryCheck"
+        ]
+     }
   },
   "tags": [ 
       "crypto", "libsodium", "password", "hash"
