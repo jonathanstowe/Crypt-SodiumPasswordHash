@@ -1,3 +1,5 @@
+v0.0.5	Sun  7 Aug 09:47:31 BST 2022
+	* Upload to zef repository
 v0.0.4		Thu 18 Nov 08:23:04 GMT 2021
 	* Fix the META6
 v0.0.3		Wed 17 Nov 12:32:44 GMT 2021
@@ -8,3 +10,4 @@ v0.0.2		Sat 27 Mar 09:32:00 GMT 2021
 	* Make a GH action for CI tests
 v0.0.1		Mon 23 Dec 09:50:44 GMT 2019
 	* Initial release
+
