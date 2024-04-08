@@ -57,7 +57,7 @@ module Crypt::SodiumPasswordHash {
     constant LIB = NativeLibs::Searcher.at-runtime(
         'sodium',
         'crypto_pwhash_strbytes',
-        15..23
+        15..26
     );
 
 
