@@ -8,7 +8,7 @@ use LibraryCheck;
 sub check-lib-version() {
     my Str $name = 'sodium';
     my Int $lower = 13;
-    my Int $upper = 23;
+    my Int $upper = 26;
 
     my $rc = False;
 
