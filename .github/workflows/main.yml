@@ -7,14 +7,14 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  star:
     runs-on: ubuntu-latest
 
     container:
       image: rakudo-star:latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Raku version
       run: raku -v
@@ -24,6 +24,27 @@ jobs:
 
     - name: install libsodium
       run:  apt-get -qq install -y libsodium23
+
+    - name: Install dependencies
+      run: zef install --deps-only --/test --force-install --test-depends .
+
+    - name: Run tests
+      run: zef test -v --debug .
+
+  alpine:
+    runs-on: ubuntu-latest
+
+    container:
+      image: rakudo-star:alpine
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Raku version
+      run: raku -v
+
+    - name: install libsodium
+      run:  apk add libsodium
 
     - name: Install dependencies
       run: zef install --deps-only --/test --force-install --test-depends .
